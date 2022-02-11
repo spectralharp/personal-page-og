@@ -50,7 +50,7 @@ app.get('/', async (req, res) => {
   if(fromRaStart < 0) { fromRaStart += MS_IN_DAY; }
 
   const lat = req.query['lat'] !== undefined ? parseFloat(req.query['lat']) : defaultLat;
-  const lng = req.query['lng'] !== undefined ? parseFloat(req.query['lng']) : (fromRaStart / MS_IN_DAY) * 360;
+  const lng = req.query['lng'] !== undefined ? parseFloat(req.query['lng']) : (fromRaStart / MS_IN_DAY) * 360 - 180;
 
   if(isNaN(lat)) {
     res.status(400).json({error: 'Cannot parse latitude'});
@@ -64,11 +64,6 @@ app.get('/', async (req, res) => {
 
   if(lat < -90 || 90 < lat) {
     res.status(400).json({error: 'Latitude needs to be between -90 to 90 degrees'});
-    return;
-  }
-
-  if(lng < 0 || 360 < lng) {
-    res.status(400).json({error: 'Longitude needs to be between 0 to 360 degrees'});
     return;
   }
 
